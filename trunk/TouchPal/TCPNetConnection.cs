@@ -157,7 +157,7 @@ namespace TouchPal
                             }
                             catch (FormatException fe)
                             {
-                                TouchPal.Error("Bad network id value (" + values[0] + ") received from client.");
+                                TouchPal.Error("Bad network id value (" + values[0] + ") received from client - " + fe.Message);
                             }
                         }
                     }

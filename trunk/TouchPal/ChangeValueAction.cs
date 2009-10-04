@@ -29,7 +29,7 @@ namespace TouchPal
             }
             catch (FormatException fe)
             {
-                TouchPal.Warn("Bad network id value (" + values[0] + ")");
+                TouchPal.Warn("Bad network id value (" + values[0] + ") - " + fe.Message);
             }
         }
 
