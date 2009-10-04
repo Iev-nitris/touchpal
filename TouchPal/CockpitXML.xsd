@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This file is part of the TouchPal project hosted on Google Code 
+     (http://code.google.com/p/touchpal). See the accompanying license.txt file for 
+     applicable licenses.-->
+<!-- (c) Copyright Craig Courtney 2009 All Rights Reserved. -->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:attribute name="Name" type="xs:ID"/>
+    <xs:attribute name="ControlName" type="xs:IDREF"/>
+    <xs:element name="Cockpit">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="StartAction" type="xs:string"/>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="ResetAction" type="xs:string"/>              
+                <xs:element name="Controls">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element minOccurs="0" maxOccurs="unbounded" name="Text">
+                              <xs:complexType>
+                                <xs:sequence>
+                                  <xs:element name="NetworkID" type="xs:int"/>
+                                  <xs:element name="Width" type="xs:int"/>
+                                  <xs:element name="Height" type="xs:int"/>
+                                  <xs:element name="DefaultValue" type="xs:string"/>
+                                  <xs:element minOccurs="0" name="FontFile" type="xs:string"/>
+                                  <xs:element name="Font" type="xs:string"/>
+                                  <xs:element name="FontSize" type="xs:float"/>
+                                  <xs:element minOccurs="0" name="FontColor">
+                                    <xs:complexType>
+                                      <xs:sequence>
+                                        <xs:element name="Red" type="xs:int"/>
+                                        <xs:element name="Green" type="xs:int"/>
+                                        <xs:element name="Blue" type="xs:int"/>
+                                      </xs:sequence>
+                                    </xs:complexType>
+                                  </xs:element>
+                                  <xs:element minOccurs="0" name="BackgroundImage" type="xs:string"/>
+                                  <xs:element minOccurs="0" maxOccurs="unbounded" name="PushedAction" type="xs:string"/>
+                                  <xs:element minOccurs="0" maxOccurs="unbounded" name="ReleaseAction" type="xs:string"/>
+                                </xs:sequence>
+                                <xs:attribute ref="Name"/>
+                              </xs:complexType>
+                            </xs:element>
+                            <xs:element minOccurs="0" maxOccurs="unbounded" name="Button">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="NetworkID" type="xs:int"/>
+                                        <xs:element name="Width" type="xs:int"/>
+                                        <xs:element name="Height" type="xs:int"/>
+                                        <xs:element name="DefaultValue" type="xs:string"/>
+                                        <xs:element minOccurs="0" name="BackgroundImage" type="xs:string"/>
+                                        <xs:element minOccurs="0" name="PushedBackgroundImage" type="xs:string"/>
+                                        <xs:element minOccurs="0" name="DefaultImage" type="xs:string"/>
+                                        <xs:element minOccurs="0" name="DefaultPushedImage" type="xs:string"/>
+                                        <xs:element minOccurs="0" maxOccurs="unbounded" name="PushedAction" type="xs:string"/>
+                                        <xs:element minOccurs="0" maxOccurs="unbounded" name="ReleaseAction" type="xs:string"/>
+                                        <xs:element maxOccurs="unbounded" name="State" minOccurs="0">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element maxOccurs="unbounded" name="StateValue" type="xs:string"/>
+                                                  <xs:element name="Image" type="xs:string"/>
+                                                  <xs:element minOccurs="0" name="PushedImage" type="xs:string"/>
+                                                  <xs:element minOccurs="0" maxOccurs="unbounded" name="PushedAction" type="xs:string"/>
+                                                  <xs:element minOccurs="0" maxOccurs="unbounded" name="ReleaseAction" type="xs:string"/>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute ref="Name"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Layout">
+                    <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="X" type="xs:int"/>
+                          <xs:element name="Y" type="xs:int"/>
+                          <xs:element name="Width" type="xs:int"/>
+                          <xs:element name="Height" type="xs:int"/>
+                          <xs:element name="BackgroundImage" type="xs:string"/>
+                          <xs:element minOccurs="0" name="TransparencyKey">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="Red" type="xs:int"/>
+                                <xs:element name="Green" type="xs:int"/>
+                                <xs:element name="Blue" type="xs:int"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element minOccurs="0" maxOccurs="unbounded" name="ControlLayout">
+                                <xs:complexType>
+                                    <xs:attribute name="X" type="xs:int"/>
+                                    <xs:attribute name="Y" type="xs:int"/>
+                                    <xs:attribute name="Layer" type="xs:int"/>
+                                    <xs:attribute ref="ControlName"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute ref="Name"/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
