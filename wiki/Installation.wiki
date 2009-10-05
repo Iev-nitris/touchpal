@@ -7,7 +7,6 @@ TouchPal does not require an installation and can be placed anywhere in your fil
 
 = Details =
 
-Installation Steps:
-* Download the latest binary from http://code.google.com/p/touchpal/downloads/list
-* Create a TouchPal folder where you want TouchPal location (ex: C:\Program Files (x86)\TouchPal)
-* Extract zip into TouchPal folder
+ * Download the latest binary from http://code.google.com/p/touchpal/downloads/list
+ * Create a TouchPal folder where you want TouchPal location (ex: C:\Program Files (x86)\TouchPal)
+ * Extract zip into TouchPal folder
