@@ -99,20 +99,55 @@ namespace TouchPal
         const uint KEY_SCANCODE = 0x0008;
 
         [StructLayout(LayoutKind.Sequential)]
-        private struct KEYBOARD_INPUT
+        struct MOUSEINPUT
         {
-            public uint type;
-            public ushort vk;
-            public ushort scanCode;
-            public uint flags;
+            public int dx;
+            public int dy;
+            public uint mouseData;
+            public uint dwFlags;
             public uint time;
-            public uint extrainfo;
-            public uint padding1;
-            public uint padding2;
+            public IntPtr dwExtraInfo;
         }
 
-        [DllImport("User32.dll")]
-        private static extern uint SendInput(uint numberOfInputs, [MarshalAs(UnmanagedType.LPArray, SizeConst = 1)] KEYBOARD_INPUT[] input, int structSize);
+        [StructLayout(LayoutKind.Sequential)]
+        struct KEYBDINPUT
+        {
+            public ushort wVk;
+            public ushort wScan;
+            public uint dwFlags;
+            public uint time;
+            public IntPtr dwExtraInfo;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        struct HARDWAREINPUT
+        {
+            public uint uMsg;
+            public ushort wParamL;
+            public ushort wParamH;
+        }
+
+        [StructLayout(LayoutKind.Explicit)]
+        struct MOUSEKEYBDHARDWAREINPUT
+        {
+            [FieldOffset(0)]
+            public MOUSEINPUT mi;
+
+            [FieldOffset(0)]
+            public KEYBDINPUT ki;
+
+            [FieldOffset(0)]
+            public HARDWAREINPUT hi;
+        }
+
+        struct INPUT
+        {
+            public int type;
+            public MOUSEKEYBDHARDWAREINPUT mkhi;
+        }
+
+        [DllImport("User32.dll", SetLastError = true)]
+        static extern uint SendInput(uint nInputs, INPUT[] pInputs, int cbSize);
 
         [DllImport("User32.dll")]
         static extern short VkKeyScan(char ch);
@@ -120,11 +155,11 @@ namespace TouchPal
         [DllImport("User32.dll")]
         static extern uint MapVirtualKey(uint uCode, uint uMapType);
 
-        private KEYBOARD_INPUT[] keyEvents;
+        private INPUT[] keyEvents;
 
         public KeyAction(string keys, bool keyDown)
         {
-            List<KEYBOARD_INPUT> eventList = new List<KEYBOARD_INPUT>();
+            List<INPUT> eventList = new List<INPUT>();
             int length = keys.Length;
             for (int index = 0; index < length; index++)
             {
@@ -156,26 +191,26 @@ namespace TouchPal
             keyEvents = eventList.ToArray();
         }
 
-        private static KEYBOARD_INPUT CreateInput(ushort virtualKeyCode, bool keyDown)
+        private static INPUT CreateInput(ushort virtualKeyCode, bool keyDown)
         {
-            KEYBOARD_INPUT input = new KEYBOARD_INPUT();
+            INPUT input = new INPUT();
             input.type = INPUT_KEYBOARD;
-            input.flags = KEY_SCANCODE;
+            input.mkhi.ki.dwFlags = KEY_SCANCODE;
 
             uint scanCode = MapVirtualKey(virtualKeyCode, 0);
             if ((virtualKeyCode >= 33 && virtualKeyCode <= 46) || (virtualKeyCode >= 91 && virtualKeyCode <= 93) ||
                 virtualKeyCode == 0xA1 || virtualKeyCode == 0xA3 || virtualKeyCode == 0xA5)
             {
-                input.flags |= KEY_EXTENDED;
+                input.mkhi.ki.dwFlags |= KEY_EXTENDED;
             }
             if (keyDown)
             {
-                input.scanCode = (ushort)(scanCode & 0xFF);
+                input.mkhi.ki.wScan = (ushort)(scanCode & 0xFF);
             }
             else
             {
-                input.scanCode = (ushort)scanCode;
-                input.flags |= KEY_UP;
+                input.mkhi.ki.wScan = (ushort)scanCode;
+                input.mkhi.ki.dwFlags |= KEY_UP;
             }
 
             return input;
