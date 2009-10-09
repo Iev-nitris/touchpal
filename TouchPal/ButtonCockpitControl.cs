@@ -32,8 +32,6 @@ namespace TouchPal
 
         public ButtonCockpitControl(ControlManager manager, CockpitXML.CockpitControlsButton control) : base(manager, control.Name, control.Width, control.Height, control.NetworkID, control.PushedAction, control.ReleaseAction)
         {
-            this.defaultValue = control.DefaultValue;
-
             background = manager.ImageCache.getImage(control.BackgroundImage);
             pushedBackground = manager.ImageCache.getImage(control.PushedBackgroundImage);
             defaultImage = manager.ImageCache.getImage(control.DefaultImage);
@@ -49,7 +47,12 @@ namespace TouchPal
             }
 
             pushed = false;
-            Value = defaultValue;
+
+            if (control.DefaultValue != null)
+            {
+                this.defaultValue = control.DefaultValue;
+                Value = defaultValue;
+            }
         }
 
         private bool HasPushedImage
@@ -125,12 +128,16 @@ namespace TouchPal
                 }
 
                 if (oldState != currentState) Invalidate();
+
+                if (currentState == null)
+                    TouchPal.Debug("No state matching '" + value + "' for '" + Name + "' control");
             }
         }
 
         public override void Reset()
         {
-            Value = defaultValue;
+            if (defaultValue != null)
+                Value = defaultValue;
         }
 
         public override void Paint(Graphics gfx, Rectangle rectangle)

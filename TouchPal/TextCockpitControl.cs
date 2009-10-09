@@ -66,7 +66,7 @@ namespace TouchPal
 
         public override void Pushed()
         {
-            throw new NotImplementedException();
+            ExecutePushedActions();
         }
 
         public override void Released()

@@ -36,9 +36,12 @@ namespace TouchPal
             IPEndPoint ipLocal = new IPEndPoint(IPAddress.Any, 9089);
             mainSocket.Bind(ipLocal);
             mainSocket.Listen(0);
+        }
 
-            mainSocket.BeginAccept(socketConnectCallback, null);
-            TouchPal.Debug("Waiting on client connect.");
+        public void StartConnection()
+        {
+            TouchPal.Debug("Starting TCP Connection");
+            WaitForConnect();
         }
 
         public ControlManager Manager
@@ -69,6 +72,13 @@ namespace TouchPal
             }
         }
 
+        private void WaitForConnect()
+        {
+            clientSocket = null;
+            mainSocket.BeginAccept(socketConnectCallback, null);
+            TouchPal.Debug("Waiting on client connect on TCP port 9089.");
+        }
+
         private void OnClientConnect(IAsyncResult asyn)
         {
             try
@@ -81,9 +91,7 @@ namespace TouchPal
             }
             catch (ObjectDisposedException)
             {
-                TouchPal.Debug("Client disconnected.  Waiting on client connect.");
-                clientSocket = null;
-                mainSocket.BeginAccept(socketConnectCallback, null);
+                WaitForConnect();
             }
             catch (SocketException se)
             {
@@ -131,10 +139,8 @@ namespace TouchPal
                 {
                     if (szData[1].Equals('Q'))
                     {
-                        TouchPal.Debug("Client disconnected.  Waiting on client connect.");
                         clientSocket.Close();
-                        clientSocket = null;
-                        mainSocket.BeginAccept(socketConnectCallback, null);
+                        WaitForConnect();
                     }
                     else if (szData[1].Equals('R') && manager != null)
                     {
@@ -166,9 +172,7 @@ namespace TouchPal
             }
             catch (ObjectDisposedException)
             {
-                TouchPal.Debug("Client disconnected.  Waiting on client connect.");
-                mainSocket.BeginAccept(socketConnectCallback, null);
-                clientSocket = null;
+                WaitForConnect();
             }
             catch (SocketException se)
             {

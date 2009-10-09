@@ -17,6 +17,7 @@ namespace TouchPal
     public interface INetConnection
     {
         ControlManager Manager { get; set; }
+        void StartConnection();
         void SendData(string data);
     }
 }

@@ -111,8 +111,11 @@ namespace TouchPal
             }
             set
             {
-                TouchPal.Debug("Control (NetworkID=" + networkID + ") value updated to " + value);
-                this.currentValue = value;
+                if (currentValue == null || !currentValue.Equals(value))
+                {
+                    TouchPal.Debug("Control (NetworkID=" + networkID + ") value updated to " + value);
+                    this.currentValue = value;
+                }
             }
         }
 

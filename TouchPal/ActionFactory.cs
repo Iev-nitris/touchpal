@@ -38,6 +38,10 @@ namespace TouchPal
                     return new ExitAction();
                 if (command.Equals("RS"))
                     return new ResetAction();
+                if (command.Equals("PH"))
+                    return new PanelVisibleAction(commandValue, false);
+                if (command.Equals("PS"))
+                    return new PanelVisibleAction(commandValue, true);
             }
 
             TouchPal.Warn("Invalid action definition: " + description);

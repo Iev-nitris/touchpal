@@ -15,6 +15,7 @@ using System.IO;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+using System.Drawing;
 
 namespace TouchPal
 {
@@ -30,10 +31,10 @@ namespace TouchPal
         private static Dictionary<string,LOG_LEVEL> logLevels = new Dictionary<string,LOG_LEVEL> {{"debug", LOG_LEVEL.DEBUG},
                                                                                                   {"warn", LOG_LEVEL.WARN},
                                                                                                   {"error", LOG_LEVEL.ERROR}};
-
         static LOG_LEVEL logLevel = LOG_LEVEL.WARN;
         static string logFilename = "TouchPal.log";
         static string touchPalDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\TouchPal";
+        static bool udp = false;
 
         /// <summary>
         /// The main entry point for the application.
@@ -43,6 +44,8 @@ namespace TouchPal
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            int forceX = -1;
+            int forceY = -1;
 
             string profile = "TouchPal.xml";
 
@@ -57,11 +60,38 @@ namespace TouchPal
                 if (argument.StartsWith("-profile=")) {
                     profile = argument.Substring(9);
                 }
+
+                if (argument.StartsWith("-homedir="))
+                {
+                    touchPalDirectory = argument.Substring(9);
+                }
+
+                if (argument.StartsWith("-udp"))
+                {
+                    udp = true;
+                }
+
+                if (argument.StartsWith("-x="))
+                {
+                    forceX = Convert.ToInt32(argument.Substring(3));
+                    TouchPal.Debug("Forceing window x to " + argument.Substring(3));
+                }
+
+                if (argument.StartsWith("-y="))
+                {
+                    forceY = Convert.ToInt32(argument.Substring(3));
+                    TouchPal.Debug("Forceing window y to " + argument.Substring(3));
+                }
             }
 
             ResetEnvironment();
 
-            INetConnection connection = new TCPNetConnection();
+            INetConnection connection = null;
+            if (udp)
+                connection = new UDPNetConnection();
+            else
+                connection = new TCPNetConnection();
+
             IImageCache cache = new BasicImageCache();
 
             try {
@@ -71,8 +101,10 @@ namespace TouchPal
                 TouchPal.Debug("Loading controls");
                 ControlManager manager = new ControlManager(connection, cache, co.StartAction, co.ResetAction, co.Controls);
 
+                connection.StartConnection();
+
                 TouchPal.Debug("Setting up form");
-                CockpitForm form = new CockpitForm(manager, cache, co.Layout);
+                CockpitForm form = new CockpitForm(manager, cache, co.Layout, forceX, forceY);
 
                 Application.Run(form);
             }
@@ -133,17 +165,17 @@ namespace TouchPal
 
         static public void Warn(string message)
         {
-            Log(LOG_LEVEL.WARN, message);
+            Log(LOG_LEVEL.WARN, "WARN:" + message);
         }
 
         static public void Debug(string message)
         {
-            Log(LOG_LEVEL.DEBUG, message);
+            Log(LOG_LEVEL.DEBUG, "DEBUG:" + message);
         }
 
         static public void Error(string message)
         {
-            Log(LOG_LEVEL.ERROR, message);
+            Log(LOG_LEVEL.ERROR, "ERROR:" + message);
         }
 
         static private void Log(LOG_LEVEL level, string message)
@@ -162,6 +194,9 @@ namespace TouchPal
                     sw.Close();
                 }
             }
+
+            if (logLevel == LOG_LEVEL.DEBUG)
+                Console.WriteLine(message);
         }
     }
 }
