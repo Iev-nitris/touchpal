@@ -597,7 +597,7 @@ namespace CockpitXML {
         
         private CockpitLayoutTransparencyKey transparencyKeyField;
         
-        private CockpitLayoutControlLayout[] controlLayoutField;
+        private CockpitLayoutPanel[] panelField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
@@ -666,13 +666,13 @@ namespace CockpitXML {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("ControlLayout", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
-        public CockpitLayoutControlLayout[] ControlLayout {
+        [System.Xml.Serialization.XmlElementAttribute("Panel", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public CockpitLayoutPanel[] Panel {
             get {
-                return this.controlLayoutField;
+                return this.panelField;
             }
             set {
-                this.controlLayoutField = value;
+                this.panelField = value;
             }
         }
     }
@@ -731,7 +731,133 @@ namespace CockpitXML {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
-    public partial class CockpitLayoutControlLayout {
+    public partial class CockpitLayoutPanel {
+        
+        private int xField;
+        
+        private int yField;
+        
+        private int widthField;
+        
+        private int heightField;
+        
+        private string backgroundImageField;
+        
+        private bool visibleField;
+        
+        private bool visibleFieldSpecified;
+        
+        private CockpitLayoutPanelControlLayout[] controlLayoutField;
+        
+        private string nameField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public int X {
+            get {
+                return this.xField;
+            }
+            set {
+                this.xField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public int Y {
+            get {
+                return this.yField;
+            }
+            set {
+                this.yField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public int Width {
+            get {
+                return this.widthField;
+            }
+            set {
+                this.widthField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public int Height {
+            get {
+                return this.heightField;
+            }
+            set {
+                this.heightField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string BackgroundImage {
+            get {
+                return this.backgroundImageField;
+            }
+            set {
+                this.backgroundImageField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public bool Visible {
+            get {
+                return this.visibleField;
+            }
+            set {
+                this.visibleField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool VisibleSpecified {
+            get {
+                return this.visibleFieldSpecified;
+            }
+            set {
+                this.visibleFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("ControlLayout", Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public CockpitLayoutPanelControlLayout[] ControlLayout {
+            get {
+                return this.controlLayoutField;
+            }
+            set {
+                this.controlLayoutField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute(DataType="ID")]
+        public string Name {
+            get {
+                return this.nameField;
+            }
+            set {
+                this.nameField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "2.0.50727.3038")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
+    public partial class CockpitLayoutPanelControlLayout {
         
         private int xField;
         
@@ -740,10 +866,6 @@ namespace CockpitXML {
         private int yField;
         
         private bool yFieldSpecified;
-        
-        private int layerField;
-        
-        private bool layerFieldSpecified;
         
         private string controlNameField;
         
@@ -788,28 +910,6 @@ namespace CockpitXML {
             }
             set {
                 this.yFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public int Layer {
-            get {
-                return this.layerField;
-            }
-            set {
-                this.layerField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool LayerSpecified {
-            get {
-                return this.layerFieldSpecified;
-            }
-            set {
-                this.layerFieldSpecified = value;
             }
         }
         

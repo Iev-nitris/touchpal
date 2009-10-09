@@ -23,10 +23,10 @@ namespace TouchPal
     {
         private IImageCache imageCache;
         private ControlManager manager;
-        private List<CockpitControlInstance> controlInstances = new List<CockpitControlInstance>();
+        private List<CockpitPanel> controlPanels = new List<CockpitPanel>();
         private CockpitControlInstance pushedItem = null;
 
-        public CockpitForm(ControlManager manager, IImageCache imageCache, CockpitXML.CockpitLayout layout)
+        public CockpitForm(ControlManager manager, IImageCache imageCache, CockpitXML.CockpitLayout layout, int forceX, int forceY)
         {
             this.manager = manager;
             this.imageCache = imageCache;
@@ -35,18 +35,12 @@ namespace TouchPal
             InitializeComponent();
 
             // Now construct the list of controls that are actually used in the layout
-            foreach (CockpitXML.CockpitLayoutControlLayout controlLayout in layout.ControlLayout)
+            foreach (CockpitXML.CockpitLayoutPanel controlPanel in layout.Panel)
             {
-                if (manager.HasControl(controlLayout.ControlName))
-                {
-                    ICockpitControl control = manager.GetControl(controlLayout.ControlName);
-                    CockpitControlInstance formItem = new CockpitControlInstance(this, control, new Point(controlLayout.X, controlLayout.Y));
-                    controlInstances.Add(formItem);
-                    control.AddInstance(formItem);
-                }
+                controlPanels.Add(new CockpitPanel(this, manager, imageCache, controlPanel));
             }
 
-            this.Location = new Point(layout.X, layout.Y);
+            this.Location = new Point(forceX >= 0 ? forceX : layout.X, forceY >= 0 ? forceY : layout.Y);
             this.Size = new Size(layout.Width, layout.Height);
             this.BackgroundImage = imageCache.getImage(layout.BackgroundImage);
             if (layout.TransparencyKey != null)
@@ -57,18 +51,29 @@ namespace TouchPal
             this.Paint += new PaintEventHandler(this.CockpitForm_Paint);
         }
 
+        public void SetPanelVisibility(string name, bool value)
+        {
+            foreach (CockpitPanel panel in controlPanels)
+            {
+                if (panel.Name.Equals(name))
+                    panel.Visible = value;
+            }
+        }
 
         private void CockpitForm_MouseDown(object sender, MouseEventArgs e)
         {
             // Loop through controls in reverse order check if click is within that button then execute action if so
-            for (int i = controlInstances.Count()-1; i >= 0; i--)
+            for (int i = controlPanels.Count()-1; i >= 0; i--)
             {
-                CockpitControlInstance item = controlInstances[i];
-                if (item.Rectangle.Contains(e.Location))
+                if (controlPanels[i].Visible && controlPanels[i].Rectangle.Contains(e.Location))
                 {
-                    pushedItem = item;
-                    pushedItem.Control.Pushed();
-                    i = -1;
+                    CockpitControlInstance item = controlPanels[i].InstanceAt(e.Location);
+                    if (item != null)
+                    {
+                        pushedItem = item;
+                        pushedItem.Control.Pushed();
+                        i = -1;
+                    }
                 }
             }            
         }
@@ -102,10 +107,12 @@ namespace TouchPal
         {
             Graphics gfx = paintEvnt.Graphics;
 
-            foreach (CockpitControlInstance control in controlInstances)
+            foreach (CockpitPanel panel in controlPanels)
             {
-                if (paintEvnt.ClipRectangle.IntersectsWith(control.Rectangle))
-                    control.Paint(gfx);
+                if (panel.Visible && paintEvnt.ClipRectangle.IntersectsWith(panel.Rectangle))
+                {
+                    panel.Paint(gfx, paintEvnt.ClipRectangle);
+                }              
             }
         }
     }

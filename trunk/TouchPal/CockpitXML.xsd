@@ -47,7 +47,7 @@
                                         <xs:element name="NetworkID" type="xs:int"/>
                                         <xs:element name="Width" type="xs:int"/>
                                         <xs:element name="Height" type="xs:int"/>
-                                        <xs:element name="DefaultValue" type="xs:string"/>
+                                        <xs:element minOccurs="0" name="DefaultValue" type="xs:string"/>
                                         <xs:element minOccurs="0" name="BackgroundImage" type="xs:string"/>
                                         <xs:element minOccurs="0" name="PushedBackgroundImage" type="xs:string"/>
                                         <xs:element minOccurs="0" name="DefaultImage" type="xs:string"/>
@@ -89,14 +89,26 @@
                               </xs:sequence>
                             </xs:complexType>
                           </xs:element>
-                          <xs:element minOccurs="0" maxOccurs="unbounded" name="ControlLayout">
-                                <xs:complexType>
+                          <xs:element maxOccurs="unbounded" name="Panel">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="X" type="xs:int"/>
+                                <xs:element name="Y" type="xs:int"/>
+                                <xs:element name="Width" type="xs:int"/>
+                                <xs:element name="Height" type="xs:int"/>
+                                <xs:element name="BackgroundImage" type="xs:string"/>
+                                <xs:element minOccurs="0" name="Visible" type="xs:boolean"/>
+                                <xs:element minOccurs="0" maxOccurs="unbounded" name="ControlLayout">
+                                  <xs:complexType>
                                     <xs:attribute name="X" type="xs:int"/>
                                     <xs:attribute name="Y" type="xs:int"/>
-                                    <xs:attribute name="Layer" type="xs:int"/>
                                     <xs:attribute ref="ControlName"/>
-                                </xs:complexType>
-                            </xs:element>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute ref="Name"/>
+                            </xs:complexType>
+                          </xs:element>
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>

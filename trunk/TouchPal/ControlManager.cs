@@ -88,15 +88,27 @@ namespace TouchPal
             return controls[name];
         }
 
+        public void SetPanelVisibility(string name, bool value)
+        {
+            foreach (CockpitForm form in forms)
+            {
+                form.SetPanelVisibility(name, value);
+            }
+        }
+
         public void UpdateControl(int networkID, string value)
         {
+            bool controlUpdated = false;
             foreach (KeyValuePair<string, ICockpitControl> kvp in controls)
             {
-                if (kvp.Value.NetworkID == networkID && !kvp.Value.Value.Equals(value))
+                if (kvp.Value.NetworkID == networkID)
                 {
+                    controlUpdated = true;
                     kvp.Value.Value = value;
                 }
             }
+            if (!controlUpdated)
+                TouchPal.Debug("NetworkID " + networkID + " recieved with value " + value + " but there are no matching controls.");
         }
 
         public void ClientConnected()

@@ -17,14 +17,14 @@ namespace TouchPal
 {
     public class CockpitControlInstance
     {
-        private CockpitForm form;
+        private CockpitPanel panel;
         private ICockpitControl control;
         private Point location;
         private Rectangle rectangle;
 
-        public CockpitControlInstance(CockpitForm form, ICockpitControl control, Point location)
+        public CockpitControlInstance(CockpitPanel panel, ICockpitControl control, Point location)
         {
-            this.form = form;
+            this.panel = panel;
             this.control = control;
             this.location = location;
             this.rectangle = new Rectangle(location, control.Size);
@@ -64,7 +64,7 @@ namespace TouchPal
 
         public void Invalidate()
         {
-            form.Invalidate(rectangle);
+            panel.Invalidate(rectangle);
         }
 
         public void Paint(Graphics gfx)

@@ -13,7 +13,13 @@
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <StartupObject>TouchPal.TouchPal</StartupObject>
-    <PublishUrl>publish\</PublishUrl>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkSubset>Full</TargetFrameworkSubset>
+    <ManifestCertificateThumbprint>ADED3C9010AA824A7FE0FEE12CB6186782922C71</ManifestCertificateThumbprint>
+    <ManifestKeyFile>TouchPal_TemporaryKey.pfx</ManifestKeyFile>
+    <GenerateManifests>false</GenerateManifests>
+    <SignManifests>true</SignManifests>
+    <PublishUrl>c:\deploy\touchpal\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -23,12 +29,14 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
+    <AutorunEnabled>true</AutorunEnabled>
+    <ApplicationRevision>2</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkSubset>Full</TargetFrameworkSubset>
+    <TargetZone>LocalIntranet</TargetZone>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -71,10 +79,12 @@
     <Compile Include="ButtonControlState.cs" />
     <Compile Include="ChangeValueAction.cs" />
     <Compile Include="CockpitControlInstance.cs" />
+    <Compile Include="CockpitPanel.cs" />
     <Compile Include="ControlManager.cs" />
     <Compile Include="ExitAction.cs" />
     <Compile Include="ICockpitControl.cs" />
     <Compile Include="KeyAction.cs" />
+    <Compile Include="PanelVisibleAction.cs" />
     <Compile Include="ResetAction.cs" />
     <Compile Include="TCPNetConnection.cs" />
     <Compile Include="CockpitXML.cs" />
@@ -109,6 +119,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <CustomToolNamespace>CockpitXML</CustomToolNamespace>
     </None>
+    <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -119,6 +130,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="TextCockpitControl.cs" />
+    <Compile Include="UDPNetConnection.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
