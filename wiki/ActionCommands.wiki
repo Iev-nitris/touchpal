@@ -1,0 +1,7 @@
+#summary Describes available ActionCommands and their syntax.
+
+= Introduction =
+
+ActionCommands are the actions which can be triggerd based on interactions with both game clients and user interaction.
+
+= Details =
