@@ -1,4 +1,5 @@
 #summary Describes available ActionCommands and their syntax.
+#labels Phase-Deploy
 
 = Introduction =
 
