@@ -34,7 +34,7 @@ namespace TouchPal
         static LOG_LEVEL logLevel = LOG_LEVEL.WARN;
         static string logFilename = "TouchPal.log";
         static string touchPalDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\TouchPal";
-        static bool udp = false;
+        static bool udp = true;
 
         /// <summary>
         /// The main entry point for the application.
@@ -64,6 +64,11 @@ namespace TouchPal
                 if (argument.StartsWith("-homedir="))
                 {
                     touchPalDirectory = argument.Substring(9);
+                }
+
+                if (argument.StartsWith("-tcp"))
+                {
+                    udp = false;
                 }
 
                 if (argument.StartsWith("-udp"))

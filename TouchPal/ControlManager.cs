@@ -37,7 +37,12 @@ namespace TouchPal
 
             if (resetActions != null)
                 foreach (string action in resetActions)
-                    this.resetActions.Add(ActionFactory.CreateAction(action));
+                {
+                    if (action.StartsWith("RS:"))
+                        TouchPal.Error("Reset CommandAction cannot be used as a ResetAction.");
+                    else
+                        this.resetActions.Add(ActionFactory.CreateAction(action));
+                }
 
             // Load all of the controls defined
             if (controls.Button != null)
